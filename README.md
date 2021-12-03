@@ -6,3 +6,5 @@ All of my 2021 solutions are written in Rust. Rust makes it super easy to build 
  - In your terminal (or Powershell on Windows), browse to the directory that you cloned this repo to.
  - Run 'cargo run'
    - This will build and execute every day's solution. If you would like to run only a single day, execute 'cargo run -p dayX'
+   
+If you would like to measure optimized performance, run 'cargo run --release'

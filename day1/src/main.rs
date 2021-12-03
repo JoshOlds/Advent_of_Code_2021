@@ -1,18 +1,9 @@
-use std::time::{Instant};
-
 use adventlib;
 mod input;
 
 fn main() {
     adventlib::input_helpers::print_puzzle_header(1);
-    let iterations = 1000;
-    let start = Instant::now();
-    for _x in 0..iterations - 1{
-        run(false);
-    }
-    run(true);
-    let elapsed = (Instant::now() - start) / iterations;
-    println!("Elapsed time microseconds: {}", elapsed.as_micros());
+    adventlib::measure_execution_time(run, 10000);
 }
 
 fn run(do_print: bool) {
