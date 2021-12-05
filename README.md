@@ -14,3 +14,4 @@ If you would like to measure optimized performance, run 'cargo run --release'
 ## Current Execution Times (for optimized build over 10,000 iterations)
 - Day 1: ~50us
 - Day 2: ~44us
+- Day 3: ~193us

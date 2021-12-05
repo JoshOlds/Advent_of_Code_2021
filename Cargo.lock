@@ -54,6 +54,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "day3"
+version = "0.1.0"
+dependencies = [
+ "adventlib",
+]
+
+[[package]]
+name = "day4"
+version = "0.1.0"
+dependencies = [
+ "adventlib",
+]
+
+[[package]]
+name = "day5"
+version = "0.1.0"
+dependencies = [
+ "adventlib",
+]
+
+[[package]]
 name = "form_urlencoded"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
