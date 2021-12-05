@@ -78,6 +78,7 @@ fn run(do_print: bool) {
         if !find_most_common_bit(&filtered_vec, iteration)
         {
             filtered_vec = filtered_vec.into_iter().filter(|line|line.chars().nth(iteration).unwrap() == '1').collect();
+
         }
         else
         {
