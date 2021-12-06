@@ -1,8 +1,12 @@
 use adventlib;
 use crate::input::PUZZLE_INPUT;
+use std::hash::BuildHasherDefault;
 use std::collections::HashMap;
+use seahash::SeaHasher;
 
 mod input;
+
+type SeaHashBuilder = BuildHasherDefault<SeaHasher>;
 
 fn main() {
     adventlib::input_helpers::print_puzzle_header(4);
@@ -14,6 +18,7 @@ pub struct Board
 {
     grid: [[usize; 5]; 5],
     has_won: bool,
+    numbers_for_recheck: usize,
 }
 
 /// A 5x5 bingo board
@@ -40,16 +45,21 @@ impl Board{
         board
     }
 
-    pub fn check_for_win(&self, marked_numbers_hash: &HashMap<usize, bool>) -> bool
+    pub fn check_for_win(&mut self, marked_numbers_hash: &HashMap<usize, bool, SeaHashBuilder>) -> bool
     {
         // check rows
         let mut count;
+        let mut max_count = 0; // Track how many matches we have, and track that x more numbers must be added for a potential win
         for row in 0..5
         {
             count = 0;
             for col in 0..5
             {
-                if marked_numbers_hash.contains_key(&self.grid[row][col]) {count += 1;}
+                if marked_numbers_hash.contains_key(&self.grid[row][col])
+                {
+                    count += 1;
+                    if count > max_count {max_count = count;}
+                }
                 else { break; } // Skip if we miss one
             }
             if count == 5 {return true;}
@@ -60,16 +70,19 @@ impl Board{
             count = 0;
             for row in 0..5
             {
-                if marked_numbers_hash.contains_key(&self.grid[row][col]) {count += 1;}
+                if marked_numbers_hash.contains_key(&self.grid[row][col]) {
+                    count += 1;
+                    if count > max_count {max_count = count;}
+                }
                 else { break; } // Skip if we miss one
             }
             if count == 5 {return true;}
         }
-
+    self.numbers_for_recheck = 5 - max_count;
     return false;
     }
 
-    pub fn sum_unmarked(&self, marked_numbers_hash: &HashMap<usize, bool>) -> usize
+    pub fn sum_unmarked(&self, marked_numbers_hash: &HashMap<usize, bool, SeaHashBuilder>) -> usize
     {
         let mut sum = 0;
         for row in 0..5
@@ -108,7 +121,7 @@ fn run(do_print: bool) {
     }
 
     // Keep adding marked numbers until we get a winning board
-    let mut marked_numbers_hash : HashMap<usize, bool> = HashMap::with_capacity(100);
+    let mut marked_numbers_hash : HashMap<usize, bool, SeaHashBuilder> = HashMap::with_capacity_and_hasher(100, SeaHashBuilder::default());
     let (mut done, mut first) = (false, false);
     let mut win_count = 0;
     let boards_amt = boards.len();
@@ -116,11 +129,17 @@ fn run(do_print: bool) {
     for (idx, val) in bingo_nums.iter().enumerate()
     {
         marked_numbers_hash.insert(*val, true);
+        for board in boards.iter_mut()
+        {
+            if board.numbers_for_recheck > 0 {board.numbers_for_recheck -= 1;}
+        }
+
         if idx >= 4 // Can't have a bingo without 5 numbers...
         {
             for board in boards.iter_mut()
             {
                 if board.has_won { continue; } // Short circuit if this board has already won
+                if board.numbers_for_recheck > 0 { continue; } // Short circuit if this board doesn't need to be rechecked
                 if board.check_for_win(&marked_numbers_hash)
                 {
                     win_count += 1;

@@ -15,4 +15,4 @@ If you would like to measure optimized performance, run 'cargo run --release'
 - Day 1: ~50us
 - Day 2: ~44us
 - Day 3: ~193us
-- Day 4: ~1630us
+- Day 4: ~730us
