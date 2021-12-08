@@ -5,7 +5,7 @@ mod input;
 
 fn main() {
     adventlib::input_helpers::print_puzzle_header(3);
-    adventlib::measure_execution_time(run, 10000);
+    adventlib::measure_execution_time_us(run, 10000);
 }
 
 fn run(do_print: bool) {

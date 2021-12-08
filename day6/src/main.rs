@@ -1,22 +1,22 @@
-use crate::input::{PUZZLE_INPUT}; //, TEST_INPUT};
+use crate::input::{PUZZLE_INPUT};
+use crate::input_gen::PUZZLE_INPUT_GEN; //, TEST_INPUT};
 
 mod input;
+mod input_gen;
 
 pub static BRUTE_FORCE: bool = false;
 
 fn main() {
     adventlib::input_helpers::print_puzzle_header(6);
-    adventlib::measure_execution_time(run, 10000);
+    adventlib::measure_execution_time_ns(run, 100000);
 }
 
 fn run(do_print: bool) {
-    // Parse out the individual strings
-    let fish_vec : Vec<usize> = adventlib::input_helpers::split_string_to_vector(PUZZLE_INPUT, ",");
 
     // Represent fish numbers by their age in an array
     let mut fish_array : [usize; 9] = [0; 9];
     // Populate starting fish
-    for starting_fish in fish_vec
+    for starting_fish in PUZZLE_INPUT_GEN
     {
         fish_array[starting_fish] += 1;
     }

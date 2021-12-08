@@ -1,11 +1,11 @@
 use std::fs::File;
 use std::io::Write;
 use crate::input::{PUZZLE_INPUT};
-use crate::input_vec::PUZZLE_INPUT_GEN;
+use crate::input_gen::PUZZLE_INPUT_GEN;
 use crate::triangle_nums::TRIANGLE_NUMS; //, TEST_INPUT};
 
 mod input;
-mod input_vec;
+mod input_gen;
 mod triangle_nums;
 
 // Pre-Generate Triangle numbers file
@@ -14,9 +14,9 @@ static GENERATE_PUZZLE_INPUT_VECTOR: bool = false;
 
 fn main() {
     if GENERATE_TRIANGLE_NUMS{ write_triangle_nums_to_file() };
-    if GENERATE_PUZZLE_INPUT_VECTOR{ adventlib::input_helpers::generate_puzzle_input_static::<i32>(PUZZLE_INPUT, ",", "day7/src/input_vec.rs"); }
+    if GENERATE_PUZZLE_INPUT_VECTOR{ adventlib::input_helpers::generate_puzzle_input_static::<i32>(PUZZLE_INPUT, ",", "day7/src/input_gen"); }
     adventlib::input_helpers::print_puzzle_header(7);
-    adventlib::measure_execution_time(run, 10000);
+    adventlib::measure_execution_time_us(run, 10000);
 }
 
 fn run(do_print: bool) {

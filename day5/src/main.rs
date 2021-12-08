@@ -10,7 +10,7 @@ pub static VISUALIZE_OUTPUT: bool = false;
 
 fn main() {
     adventlib::input_helpers::print_puzzle_header(5);
-    adventlib::measure_execution_time(run, 1000);
+    adventlib::measure_execution_time_us(run, 1000);
 }
 
 fn run(do_print: bool) {
