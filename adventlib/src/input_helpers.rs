@@ -1,5 +1,8 @@
 use std::fmt::Debug;
 use std::{str::FromStr};
+use std::fs::File;
+use std::any::type_name;
+use std::io::Write;
 use ureq;
 
 // Prints a pretty header for puzzle
@@ -18,6 +21,25 @@ pub fn split_string_to_vector<T: FromStr>(input: &str, delimiter: &str) -> Vec<T
         out_vector.push(string.parse::<T>().unwrap());
     }
     out_vector
+}
+
+/// Parses and then writes an importable Rust module that contains the puzzle input formatted as a vector.
+pub fn generate_puzzle_input_static<T: FromStr + ToString>(input: &str, delimiter: &str, file_path: &str)
+    where
+        <T as FromStr>::Err: Debug,
+{
+    let data : Vec<T> = split_string_to_vector(input, delimiter);
+    let mut file = File::create(file_path).unwrap();
+    let mut output = String::new();
+    output += &*format!("pub static PUZZLE_INPUT_GEN: [{}; {}] = [", type_name::<T>(), data.len());
+    let len = &data.len();
+    for (idx, val) in data.into_iter().enumerate()
+    {
+        output += &*val.to_string();
+        if idx < len - 1 { output += ","; }
+    }
+    output += "];";
+    file.write_all(&*output.into_bytes()).unwrap();
 }
 
 /// Fetch the puzzle input from the Advent site, returns as a string
