@@ -13,7 +13,7 @@ pub fn split_string_to_vector<T: FromStr>(input: &str, delimiter: &str) -> Vec<T
         <T as FromStr>::Err: Debug,
 {
     let in_vector: Vec<&str> = input.split(delimiter).collect();
-    let mut out_vector: Vec<T> = Vec::new();
+    let mut out_vector: Vec<T> = Vec::with_capacity(in_vector.len());
     for string in in_vector.iter() {
         out_vector.push(string.parse::<T>().unwrap());
     }
