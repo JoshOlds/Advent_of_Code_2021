@@ -5,7 +5,7 @@ use std::any::type_name;
 use std::io::Write;
 use ureq;
 
-// Prints a pretty header for puzzle
+/// Prints a pretty header for puzzle
 pub fn print_puzzle_header(day_num: i32){
     println!("--------------------\n       Day {}     \n--------------------", day_num);
 }
@@ -23,15 +23,24 @@ pub fn split_string_to_vector<T: FromStr>(input: &str, delimiter: &str) -> Vec<T
     out_vector
 }
 
-/// Parses and then writes an importable Rust module that contains the puzzle input formatted as a vector.
+/// Parses and then writes an importable Rust module that contains the puzzle input formatted as an array.
 pub fn generate_puzzle_input_static<T: FromStr + ToString>(input: &str, delimiter: &str, file_path: &str)
     where
         <T as FromStr>::Err: Debug,
 {
     let data : Vec<T> = split_string_to_vector(input, delimiter);
     let mut file = File::create(file_path).unwrap();
+    let output = vector_as_static_rust_gen(&data, "PUZZLE_INPUT_GEN");
+    file.write_all(&*output.into_bytes()).unwrap();
+}
+
+/// Generate the Rust code literal representation of the passed array, intended to be written to a module file
+pub fn vector_as_static_rust_gen<T: FromStr + ToString>(data : &Vec<T>, var_name: &str) -> String
+    where
+        <T as FromStr>::Err: Debug,
+{
     let mut output = String::new();
-    output += &*format!("pub static PUZZLE_INPUT_GEN: [{}; {}] = [", type_name::<T>(), data.len());
+    output += &*format!("pub static {}: [{}; {}] = [", var_name, type_name::<T>(), data.len());
     let len = &data.len();
     for (idx, val) in data.into_iter().enumerate()
     {
@@ -39,7 +48,7 @@ pub fn generate_puzzle_input_static<T: FromStr + ToString>(input: &str, delimite
         if idx < len - 1 { output += ","; }
     }
     output += "];";
-    file.write_all(&*output.into_bytes()).unwrap();
+    output
 }
 
 /// Fetch the puzzle input from the Advent site, returns as a string

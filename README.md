@@ -19,3 +19,4 @@ If you would like to measure optimized performance, run 'cargo run --release'
 - Day 5: ~710us
 - Day 6: ~180 _nanoseconds_
 - Day 7: ~630us
+- day 8: ~120us

@@ -14,7 +14,7 @@ static GENERATE_PUZZLE_INPUT_VECTOR: bool = false;
 
 fn main() {
     if GENERATE_TRIANGLE_NUMS{ write_triangle_nums_to_file() };
-    if GENERATE_PUZZLE_INPUT_VECTOR{ adventlib::input_helpers::generate_puzzle_input_static::<i32>(PUZZLE_INPUT, ",", "day7/src/input_gen"); }
+    if GENERATE_PUZZLE_INPUT_VECTOR{ adventlib::input_helpers::generate_puzzle_input_static::<i32>(PUZZLE_INPUT, ",", "day7/src/input_gen.rs"); }
     adventlib::input_helpers::print_puzzle_header(7);
     adventlib::measure_execution_time_us(run, 10000);
 }
